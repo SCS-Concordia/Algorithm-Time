@@ -1,0 +1,38 @@
+<div class="col-md-offset-2 col-md-8">
+	<div class="user-profile">
+		<div class="main-title-profile text-center">
+			<h2><b><%=profile.fullname%></b> <span class="small"><i>(<%=profile.nickname%>)</i></span> <% if(user.level == level.ADMIN || (user.nickname == profile.nickname && user.level == level.USER)){%><a href="<%=base_url%>/user/edit/<%=profile.nickname%>" style="font-size:12px;" class="label label-info">Edit profile</a><%}%></h2>
+			<h3>Total Points</h3>
+			<h4><span class="glyphicon glyphicon-star" aria-hidden="true"></span><%= profile.score %></h4>
+		</div>
+		<div class="text-center">
+			<h3>My solutions</h3>
+			<div class="col-md-offset-2 col-md-8">
+				<table class="table table-striped text-left">
+					<tr>
+						<th>#</th>
+						<th>Name</th>
+						<th>Points</th>
+						<% if(profile.problems.length > 0){ %>
+							<th style="width:1%;"></th>
+						<% } %>
+					</tr>
+					<% if(profile.problems.length > 0){ %>
+						<% for(var i = 0; i < profile.problems.length; i++) { %>
+							<tr>
+								<td><%= (i+1) %></td>
+								<td><%= profile.problems[i].prob_docs[0].title %></td>
+								<td><%= profile.problems[i].score %></td>
+								<td><a href="<%=base_url%>/prob/<%= profile.problems[i].prob %>" class="label label-info">View problem</a></td>
+							</tr>
+						<% } %>
+					<% }else{ %>
+						<tr>
+							<td colspan="3">You have yet to tackle any problems</td>
+						</tr>
+					<% } %>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

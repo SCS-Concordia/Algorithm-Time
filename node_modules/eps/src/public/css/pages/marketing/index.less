@@ -1,0 +1,41 @@
+#index-page {
+
+    .panel, .well, .alert {
+        margin-top: 10px;
+    }
+
+    .alert {
+        margin-bottom: 0px;
+    }
+
+    @media (max-width: @screen-sm-max) {
+        .fa-envelope-o {
+            display: none;
+        }
+    }
+
+    @media (min-width: @screen-md-min) and (max-width: @screen-md-max) {
+        .well {
+            .fa-envelope-o {
+                font-size: 214px;
+            }
+            h1 {
+                padding-left: 26px;
+                font-size: 56px;
+                padding-top: 26px;
+            }
+        }
+    }
+
+    @media (min-width: @screen-lg-min) {
+        .well {
+            .fa-envelope-o {
+                font-size: 214px;
+            }
+            h1 {
+                font-size: 74px;
+            }
+        }
+    }
+
+}

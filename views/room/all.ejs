@@ -1,0 +1,23 @@
+<div class="col-md-offset-2 col-md-8">
+	<div class="main-title text-center">
+		<h3>Available Rooms</h3>
+	</div>
+	<table class="table table-striped">
+		<tr>
+			<th># Room</th>
+			<th>Title</th>
+			<th>Date</th>
+			<th>Points</th>
+		</tr>
+		<% for(var i=0; i<rooms.length; i++) {%>
+			<tr>
+				<td><%= rooms[i].room %></td>
+		  	<td>
+					<a href="<%= __base_url + "/room/" + rooms[i].room %>"><%= rooms[i].title %></a>
+				</td>
+		  	<td><%= months[rooms[i].date.getMonth()] + " " +rooms[i].date.getDate() + ", " + rooms[i].date.getFullYear()%></td>
+		  	<td><span class="glyphicon glyphicon-star" aria-hidden="true"></span>&nbsp;<%= rooms[i].points %></td>
+		  </tr>
+		<% } %>
+	</table>
+</div>

@@ -1,0 +1,37 @@
+<div class="col-md-offset-2 col-md-8">
+	<div class="main-title text-center">
+		<h3>All sessions</h3>
+	</div>
+	<table class="table table-striped">
+		<tr>
+			<th>#</th>
+			<th>Session key</th>
+			<th>Nickname</th>
+			<th></th>
+		</tr>
+		<% for(var i=0; i<sessions.length; i++) {%>
+		<tr>
+				<td><%= i+1 %></td>
+				<td><%= sessions[i].key%></td>
+				<td><%= sessions[i].nickname%></td>
+				<td style="width:1%;"><a href="<%= base_url%>/session/<%=sessions[i].key%>" class="label label-danger delete-session">Delete</td>
+		</tr>
+		<% } %>
+	</table>
+</div>
+
+<script>
+$(".delete-session").on("click", function(){
+	myThis = $(this)
+	$.get(myThis.attr("href"), function(data) {
+		if(data == "200") {
+			myThis.closest("tr").remove();
+		} else if(data == "404") {
+			alert("Session not found!");
+		} else if(data == "500") {
+			alert("Error connecting to the database");
+		}
+	});
+	return false;
+});
+</script>

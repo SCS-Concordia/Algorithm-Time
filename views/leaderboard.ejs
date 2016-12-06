@@ -1,0 +1,27 @@
+<div class="col-md-offset-2 col-md-8">
+	<div class="main-title text-center">
+		<h3>Algorithm Time Leaderboard</h3>
+	</div>
+	<table class="table table-striped" id="leaderboard">
+		<tr>
+			<th># Rank</th>
+			<th>Nickname</th>
+			<th>Full Name</th>
+			<th>Last Login</th>
+			<th>Points</th>
+		</tr>
+		<% for(var i=0; i<users.length; i++) {%>
+			<tr class="user-row <% if (users[i].nickname == currentUser) { %>info<% } %>">
+				<td><%= i+1 %></td>
+		  	<td id="username"><%= users[i].nickname %></td>
+		  	<td><%= users[i].fullname %></td>
+		  	<% if (users[i].lastLogin == null) { %>
+		  		<td>Never</td>
+		  	<% } else { %>
+		  	<td><%= months[users[i].lastLogin.getMonth()] + " " +users[i].lastLogin.getDate() + ", " + users[i].lastLogin.getFullYear()%></td>
+		  	<% } %>
+		  	<td><span class="glyphicon glyphicon-star" aria-hidden="true"></span>&nbsp;<%= users[i].score %></td>
+		  </tr>
+		<% } %>
+	</table>
+</div>

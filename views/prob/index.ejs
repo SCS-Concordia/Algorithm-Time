@@ -1,0 +1,37 @@
+<div class="col-md-offset-3 col-md-6">
+	<br><br>
+	<div class="panel panel-default">
+	  <!-- Default panel contents -->
+	  <div class="panel-heading"><strong><%= prob.title %></strong> <% if(user.level == level.ADMIN){%><a href="<%=base_url%>/prob/edit/<%=prob.id%>" class="label label-info">Edit problem</a><%}%><span class="label label-success right"><%= prob.score %> points</span></div>
+	  <div class="panel-body">
+	    <p><%- prob.description %></p>
+	  </div>
+
+	  <!-- List group -->
+	  <div class="list-group">
+		<div class="list-group-item">
+			<h5><b>Submission history</b></h5>
+			<%if(rels.length == 0){%><i>No submission found</i><%}%>
+			<%for(var i=0; i < rels.length; i++){%>
+			<p>- <%=rels[i].date%> - <%if(rels[i].accept){%>Accepted<%}else if(rels[i].complete){%>Not accepted<%}else{%>Pending<%}%></p>
+			<%}%>
+		</div>
+	    <% if(accept) { %>
+	    <div class="list-group-item" style="background-color:#dff0d8">
+	    	<span class="glyphicon glyphicon-star" aria-hidden="true"></span>&nbsp;&nbsp;Problem complete and reviewed
+	    </div>
+	    <% }else if (!complete){ %>
+	    <div class="list-group-item" style="background-color:#d9edf7">
+	    	<span class="glyphicon glyphicon-flag" aria-hidden="true"></span>&nbsp;&nbsp;Pending review
+	    </div>
+	    <% } else { %>
+	    <a href="<%= __base_url %>/prob/review/<%= prob.id %>" class="list-group-item">
+	    	<span class="glyphicon glyphicon-flag" aria-hidden="true"></span>&nbsp;&nbsp;Ask for solution review 
+	    </a>
+	    <% } %>
+	    <a href="<%= __base_url %>/room/<%= prob.room %>" class="list-group-item">
+	    	<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>&nbsp;&nbsp;Back to room 
+	    </a>
+	  </div>
+	</div>
+</div>

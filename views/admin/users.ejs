@@ -1,0 +1,59 @@
+<div class="col-md-offset-2 col-md-8">
+	<div class="main-title text-center">
+		<h3>All users</h3>
+	</div>
+	<table class="table table-striped">
+		<tr>
+			<th>#</th>
+			<th>Nickname</th>
+			<th>Full Name</th>
+			<th>Last Login</th>
+			<th>Points</th>
+			<th>Email</th>
+			<th>Level</th>
+			<th></th>
+			<th></th>
+			<th></th>
+		</tr>
+		<% for(var i=0; i<users.length; i++) {%>
+		<tr>
+				<td><%= i+1 %></td>
+				<td><%= users[i].nickname %></td>
+				<td><%= users[i].fullname %></td>
+				<% if (users[i].lastLogin == null) { %>
+					<td>Never</td>
+				<% } else { %>
+				<td><%= months[users[i].lastLogin.getMonth()] + " " +users[i].lastLogin.getDate() + ", " + users[i].lastLogin.getFullYear()%></td>
+				<% } %>
+				<td><span class="glyphicon glyphicon-star" aria-hidden="true"></span>&nbsp;<%= users[i].score %></td>
+				<td><%= users[i].email%></td>
+				<td>
+					<%for(property in level){
+						if(level[property] == users[i].level){%>
+							<%= property%>
+						<%}
+					}%>
+				</td>
+				<td style="width:1%;"><a href="<%= base_url%>/user/profile/<%=users[i].nickname%>" class="label label-success">View</td>
+				<td style="width:1%;"><a href="<%= base_url%>/user/edit/<%=users[i].nickname%>" class="label label-info">Edit</td>
+				<td style="width:1%;"><a href="<%= base_url%>/user/delete/<%=users[i].nickname%>" class="label label-danger delete-user">Delete</td>
+		</tr>
+		<% } %>
+	</table>
+</div>
+
+<script>
+$(".delete-user").on("click", function(){
+	myThis = $(this)
+	$.get(myThis.attr("href"), function(data) {
+		if(data == "200") {
+			myThis.closest("tr").remove();
+		} else if(data == "404") {
+			alert("Session not found!");
+		} else if(data == "500") {
+			alert("Error connecting to the database");
+		}
+	});
+	return false;
+});
+</script>

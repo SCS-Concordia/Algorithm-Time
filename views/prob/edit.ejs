@@ -1,0 +1,43 @@
+<div class="col-md-offset-3 col-md-6">
+	<div class="create-prob">
+		<br>
+		<h3 >Edit problem</h3>
+		<br>
+		<form method="POST" action="<%=base_url%>/prob/edit/<%=prob.id%>">
+
+			<% if(typeof success_msg != 'undefined') { %>
+			<div class="top-messages bg-success"><%= success_msg %></div>
+			<% } %>
+
+			<% if(typeof error_msg != 'undefined') { %>
+			<p class="top-messages bg-danger"><%= error_msg %></p>
+			<% } %>
+
+			<div class="form-group">
+				<label for="title">Title <span class="text-danger">*</span></label>
+				<input name="title" type="text" class="form-control" id="title" placeholder="Problem title" value="<%=prob.title%>">
+			</div>
+			<div class="form-group">
+				<label for="room">Room <span class="text-danger">*</span></label>
+				<select name="room" class="form-control">
+					<% for(var i=0; i<rooms.length; i++){
+						var selected = prob.room == rooms[i].room ? 'selected="selected"' : "";%>
+					<option <%=selected%> value="<%=rooms[i].room%>"><%=rooms[i].title%></option>
+					<%}%>
+				</select>
+			</div>
+			<div class="form-group">
+				<label for="description">Description <span class="text-danger">*</span></label>
+				<textarea name="description" class="form-control" id="description" style="height:8em;"placeholder="Define the problem"><%=prob.description%></textarea>
+			</div>
+			<div class="form-group">
+				<label for="score">Score <span class="text-danger">*</span></label>
+				<input name="score" class="form-control" id="score" placeholder="Score" value="<%=prob.score%>"/>
+			</div>
+
+			<div class="text-danger form-group">* Required field</div>
+			<button type="submit" class="btn btn-default">Save</button>
+			<a href="<%= base_url%>/prob/<%=prob.id%>" class="btn btn-default">Cancel</a>
+		</form>
+	</div>
+</div>

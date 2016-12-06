@@ -1,0 +1,41 @@
+<div class="col-md-offset-2 col-md-8">
+	<div class="main-title text-center">
+		<h3>All rooms</h3>
+	</div>
+	<table class="table table-striped">
+		<tr>
+			<th>#</th>
+			<th>Title</th>
+			<th>Date</th>
+			<th>Points</th>
+			<th></th>
+			<th></th>
+		</tr>
+		<% for(var i=0; i<rooms.length; i++) {%>
+		<tr>
+			<td><%= rooms[i].room %></td>
+		  	<td><a href="<%= __base_url + "/room/" + rooms[i].room %>"><%= rooms[i].title %></a></td>
+		  	<td><%= months[rooms[i].date.getMonth()] + " " +rooms[i].date.getDate() + ", " + rooms[i].date.getFullYear()%></td>
+		  	<td><span class="glyphicon glyphicon-star" aria-hidden="true"></span>&nbsp;<%= rooms[i].points %></td>
+			<td style="width:1%;"><a href="<%=base_url%>/room/edit/<%=rooms[i].room%>" class="label label-info">Edit</a></td>
+			<td style="width:1%;"><a href="<%=base_url%>/room/delete/<%=rooms[i].room%>" class="label label-danger delete-room">Delete</a></td>
+		</tr>
+		<% } %>
+	</table>
+</div>
+
+<script>
+$(".delete-room").on("click", function(){
+	myThis = $(this)
+	$.get(myThis.attr("href"), function(data) {
+		if(data == "200") {
+			myThis.closest("tr").remove();
+		} else if(data == "404") {
+			alert("Session not found!");
+		} else if(data == "500") {
+			alert("Error connecting to the database");
+		}
+	});
+	return false;
+});
+</script>

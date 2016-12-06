@@ -1,0 +1,50 @@
+<div class="col-md-offset-4 col-md-4">
+	<br><br>
+	<div class="panel panel-default">
+	  <!-- Default panel contents -->
+	  <div class="panel-heading"><strong><%= room.title %></strong> <%if(user.level == level.ADMIN){%><a href="<%=base_url%>/room/edit/<%=room.room%>" class="label label-info">Edit room</a><%}%><span class="label label-success right"><%= room.points %> points</span></div>
+	  <div class="panel-body">
+	    <p><%= room.description %></p>
+	  </div>
+
+	  <!-- List group -->
+	  <div class="panel-heading" style="border-top:1px solid rgb(221, 221, 221); border-radius:0px;">Problem List</div>
+	  <div class="list-group">
+	  	<% for(var i=0; i<probs.length; i++) {%>
+	  		<a href="<%= __base_url %>/prob/<%= probs[i].id %>" class="list-group-item" 
+	  		<% if(solved.indexOf(probs[i].id) != -1 ){%>style="background-color:#dff0d8"<% } %>><%=probs[i].title%>
+	  		<span class="right"><span class="glyphicon glyphicon-star" aria-hidden="true"></span>&nbsp;&nbsp;<%= probs[i].score%></span></a>
+	  	<% }%>
+
+	    <% if(user.level == level.ADMIN) { %>
+	    <a href="<%= __base_url %>/prob/create/<%= room.room %>" class="list-group-item">
+	    	<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;&nbsp;Add Problem
+	    </a>
+	    <% } %>
+
+	  </div>
+	</div>
+	<h3>Leaderboards</h3>
+	<table class="table table-striped" id="leaderboard">
+		<tr>
+			<th># Rank</th>
+			<th>Nickname</th>
+			<th>Points</th>
+			<th>Completed</th>
+		</tr>
+		<% if(room_leaderboards.length > 0){ %>
+			<% for(var i = 0; i < room_leaderboards.length; i++) {%>
+				<tr class="user-row <% if (room_leaderboards[i]._id == user.nickname) { %>info<% } %>">
+					<td><%= i+1 %></td>
+					<td id="username"><%= room_leaderboards[i]._id %></td>
+				  	<td><span class="glyphicon glyphicon-star" aria-hidden="true"></span>&nbsp;<%= room_leaderboards[i].totalScore %></td>
+				  	<td><%= room_leaderboards[i].count %>/<%= probs.length %></td>
+				</tr>
+			<% } %>
+		<% }else{ %>
+		    	<tr>
+		    		<td colspan="4">Be the first to complete a problem</td>
+		    	</tr>
+		<% } %>
+	</table>
+</div>

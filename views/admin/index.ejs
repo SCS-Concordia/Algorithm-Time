@@ -1,0 +1,32 @@
+<div class="col-md-offset-2 col-md-8">
+	<div class="main-title text-center">
+		<h3>Admin panel</h3>
+	</div>
+	<div class="col-md-offset-2 col-md-8">
+		<ul style="list-style-type: none;">
+			<h4>List data</h4>
+			<li><a href="<%=base_url%>/admin/sessions"><span class="glyphicon glyphicon-eye-open"></span> View all sessions</a></li>
+			<li><a href="<%=base_url%>/admin/users"><span class="glyphicon glyphicon-eye-open"></span> View all users</a></li>
+			<li><a href="<%=base_url%>/admin/rooms"><span class="glyphicon glyphicon-eye-open"></span> View all rooms</a></li>
+			<li><a href="<%=base_url%>/admin/probs"><span class="glyphicon glyphicon-eye-open"></span> View all problems</a></li>
+			<hr/>
+			<h4>Danger zone</h4>
+			<li><a href="<%=base_url%>/admin/delete_guests" id="delete-guests" class="label label-danger"><span class="glyphicon glyphicon-flash"></span> Delete all guest users</a></li>
+		</ul>	
+	</div>
+</div>
+
+<script>
+$("#delete-guests").on("click", function(){
+	myThis = $(this)
+	$.get(myThis.attr("href"), function(data) {
+		if(data == "200") {
+			myThis.removeClass("label-danger");
+			myThis.addClass("label-primary");
+		} else if(data == "500") {
+			alert("Error connecting to the database");
+		}
+	});
+	return false;
+});
+</script>

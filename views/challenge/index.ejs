@@ -1,0 +1,43 @@
+<div class="col-md-offset-2 col-md-8">
+	<div class="col-md-12">
+		<h3>Available Rooms</h3>
+	</div>
+	<div class="col-md-12 challenge-main-container">
+		<div class="col-md-9 room-container">
+			<table class="table table-striped" id="challenge_rooms">
+				<tr id="challenge_rooms_header">
+					<th>Title</th>
+					<th>Type</th>
+					<th>Elo</th>
+					<th>Owner</th>
+				</tr>
+				<% var added = false;
+				   for(var key in rooms){
+				   	added = true; %>
+					<tr class="room_<%=key%>" onclick="setJoinRoom(<%=key%>);">
+						<td><%=rooms[key].title%></td>
+						<td><%=type_names[rooms[key].type - 1]%></td>
+						<td>1200</td>
+						<td><%=rooms[key].team_1[0].nickname%></td>
+					</tr>
+				<% } %>
+				<tr id="challenge_rooms_empty" <% if(added){ %> style="display: none;" <% } %>>
+					<th colspan="4">No available rooms</th>
+				</tr>
+			</table>
+		</div>
+		<div class="col-md-3 command-container">
+			<div class="row challenge-button-container">
+				<div class="btn col-md-12 challenge-create-button" data-toggle="modal" data-target="#create_room_modal">
+					<p class="challenge-button-text">Create Room</p>
+				</div>
+			</div>
+			<div class="row challenge-button-container">
+				<div class="btn col-md-12 challenge-join-button disabled">
+					<p class="challenge-button-text">Join Room</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<% include ../template/challenge/create_room_modal %>

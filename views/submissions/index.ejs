@@ -1,0 +1,41 @@
+<div class="col-md-offset-2 col-md-8">
+	<div class="main-title text-center">
+		<h3>Submissions</h3>
+	</div>
+	<% if(rels.length > 0) { %>
+		<table class="table table-striped">
+			<tr>
+				<th>Problem</th>
+				<th>Room ID</th>
+				<th>Programmer</th>
+				<th>Date of Submission</th>
+				<th>Action</th>
+			</tr>	
+			<% for(var i=0; i<rels.length; i++) {%>
+				<tr>
+			  	<td><a href="<%=__base_url%>/prob/<%= rels[i].prob %>"><%= rels[i].prob_docs[0].title %></td>
+			  	<td><a href="<%=__base_url%>/room/<%= rels[i].prob_docs[0].room %>"><%= rels[i].prob_docs[0].room %></a></td>
+			  	<td><%= rels[i].user_docs[0].fullname %></td>
+			  	<td><%= months[rels[i].date.getMonth()] + " " +rels[i].date.getDate() + ", " + rels[i].date.getFullYear() + " at " + rels[i].date.getHours() + ":" + rels[i].date.getMinutes() + ":" + rels[i].date.getSeconds()%></td>
+			  	<td>
+			  		
+			  		<!-- Small button group -->
+						<div class="btn-group">
+						  <button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						    Mark as... <span class="caret"></span>
+						  </button>
+						  <ul class="dropdown-menu">
+						    <li><a href="<%=__base_url%>/prob/complete/<%= rels[i]._id %>">Complete</a></li>
+						    <li><a href="<%=__base_url%>/prob/incomplete/<%= rels[i]._id %>">Incomplete</a></li>
+						  </ul>
+						</div>
+
+			  	</td>
+			  </tr>
+			<% } %>
+		</table>
+	<% } else { %>
+		<h2 class="text-center"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span></h2>
+		<h4 class="text-center">All submissions taken care of.</h4>
+	<% } %>
+</div>

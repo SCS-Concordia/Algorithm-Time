@@ -1,0 +1,35 @@
+<div class="modal fade" id="create_room_modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Create A Room</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="col-md-4">
+              <label>Title</label><br>
+              <input type="text" id="create_room_title" />
+            </div>
+            <div class="col-md-4">
+              <label>Game Type</label><br>
+              <select id="create_room_game_option">
+                <option value="1" selected>OneVsOne</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label>Password</label><br>
+              <input type="password" id="create_room_password" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div id="create_room_error" class="alert alert-danger alert-dismissible" role="alert" style="display: none;"></div>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="createChallengeRoom();">Create</button>
+      </div>
+    </div>
+  </div>
+</div>

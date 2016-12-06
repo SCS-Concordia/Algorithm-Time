@@ -1,0 +1,140 @@
+		<div class="text-center col-md-4 col-md-offset-4 user-count">
+		<hr>
+			<div class="footer-button-container">
+				</span><span id="connected_users" class="label label-primary">0 Connected Users</span>
+				<a class="github-button" href="https://github.com/jacobrs/Algorithm-time/fork" data-icon="octicon-repo-forked" data-count-href="/jacobrs/Algorithm-time/network" data-count-api="/repos/jacobrs/Algorithm-time#forks_count" data-count-aria-label="# forks on GitHub" aria-label="Fork jacobrs/Algorithm-time on GitHub">Fork</a>
+				<a class="github-button" href="https://github.com/amirbawab/Algorithm-time/issues" data-icon="octicon-issue-opened" data-count-api="/repos/amirbawab/Algorithm-time#open_issues_count" data-count-aria-label="# issues on GitHub" aria-label="Issue amirbawab/Algorithm-time on GitHub">Issue</a>
+				<a class="github-button" href="https://github.com/jacobrs/Algorithm-time/archive/master.zip" data-icon="octicon-cloud-download" aria-label="Download jacobrs/Algorithm-time on GitHub">Download</a>
+			</div>
+		</div>
+		<script>  
+			var socket = io();
+			socket.on('user_count', function(count){
+				$("#connected_users").text(parseInt(count) + " Connected User" + ((count!=1)?"s":""));
+			});
+			<% if(main_page.split("/").pop() == "leaderboard"){ %>
+				var months = ["January", "February", "March", "April", "May", "June", "July", "August", "Septembter", "October", "November", "December"];
+				socket.on('leaderboard', function(payload){
+					var board = document.getElementById("leaderboard");
+					var userrows = document.getElementsByClassName("user-row");
+					for(var i = 0; i < payload.users.length; i++){
+						var d = new Date(payload.users[i].lastLogin);
+						var row = "";
+						if(userrows.length > i){
+							row = userrows[i];
+							var nickname = row.children[1];
+							var fullname = row.children[2];
+							var date = row.children[3];
+							var points = row.children[4];	
+						}else{
+							row = board.insertRow(i+1);
+							var rank = row.insertCell(0);
+							var nickname = row.insertCell(1);
+							var fullname = row.insertCell(2);
+							var date = row.insertCell(3);
+							var points = row.insertCell(4);	
+							rank.innerHTML = i + 1;
+						}
+						if(payload.users[i].lastLogin == null){
+							date.innerHTML = "Never";
+						}else{
+							date.innerHTML = months[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear();		
+						}
+						
+						nickname.innerHTML = payload.users[i].nickname;
+						fullname.innerHTML = payload.users[i].fullname;
+						points.innerHTML = '<span class="glyphicon glyphicon-star" aria-hidden="true"></span>&nbsp;' + payload.users[i].score;
+
+						row.className = "user-row";
+						if(payload.users[i].nickname == payload.currentUser){
+							row.className += " info";
+						}
+					}
+				});
+			<% } %>
+			<% if(main_page.split("/").reverse()[1] == "challenge"){ %>
+				var challenge = io.connect("<%=base_url%>/challenge");
+
+				function setJoinRoom(room_number){
+					$('tr[class^=room_].clicked').removeClass('clicked');
+					$('.room_'+room_number).addClass('clicked');
+
+					$('.challenge-join-button').removeClass('disabled');
+					$('.challenge-join-button').attr('onclick', 'joinRoom('+room_number+')');
+				}
+
+				function joinRoom(room_number){
+
+				}
+
+				challenge.on('challenge_rooms_update', function(data){
+					// Load all of the available rooms
+					var table = $('#challenge_rooms');
+					var rows  = $('#challenge_rooms [class^=room_]');
+
+					if(Object.keys(data.rooms).length > 0){
+						$('#challenge_rooms_empty').hide();
+						$(rows).remove();
+						var table_rows = "";
+
+						for(var key in data.rooms){
+							table_rows += "<tr class='room_"+key+"' onclick='setJoinRoom("+key+")'>";
+							table_rows += 	"<td>"+data.rooms[key].title+"</td>";
+							table_rows += 	"<td>"+data.type_names[data.rooms[key].type - 1]+"</td>";
+							table_rows += 	"<td>1200</td>";
+							table_rows += 	"<td>"+data.rooms[key].team_1[0].nickname+"</td>";
+							table_rows += "</td>";
+						}
+
+						$('#challenge_rooms_header').after(table_rows);
+					}else{
+						$('#challenge_rooms_empty').show();
+						$(rows).remove();
+
+						$('.challenge-join-button').addClass('disabled');
+						$('.challenge-join-button').removeAttr('onclick');
+					}
+				});
+
+				challenge.on('create_challenge_response', function(data){
+					if(data.response == "success"){
+						// Redirect to the new room
+						window.location.href = "<%=base_url%>/challenge/room/"+data.room_number;
+					}
+				});
+
+				function createChallengeRoom(){
+					// Handle collecting the data and error handling here
+					var title    = $('#create_room_title').val();
+					var option   = $('#create_room_game_option').val();
+					var password = $('#create_room_password').val();
+					var error    = false;
+					var errorMsg = "";
+
+					if(title == ""){
+						error    = true;
+						errorMsg = "You need a title\n";
+					}
+
+					if(!error){
+						$('#create_room_error').hide();
+
+						var room = {}
+						room.title  = title;
+						room.option = option;
+						room.password = password;
+
+						// Request a room be created by the server
+						challenge.emit("create_challenge", room);
+					}else{
+						$('#create_room_error').html("<p>"+errorMsg+"</p>");
+						$('#create_room_error').show();
+					}
+				}
+			<% } %>
+			<% if(main_page.split("/").reverse()[2] + "/" + main_page.split("/").reverse()[1] == "challenge/room"){ %>
+				var challenge_room = io.connect("<%=base_url%>/challenge");
+			<% } %>
+		</script> 
+	</body>
+</html>
