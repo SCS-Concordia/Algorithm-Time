@@ -1,4 +1,4 @@
-# Algorithm time [![Build Status](https://travis-ci.org/amirbawab/Algorithm-time.svg?branch=master)](https://travis-ci.org/amirbawab/Algorithm-time)
+# Algorithm time [![Build Status](https://travis-ci.org/SCS-Concordia/Algorithm-Time.svg?branch=master)](https://travis-ci.org/SCS-Concordia/Algorithm-Time)
 
 ## Docker container
 ```

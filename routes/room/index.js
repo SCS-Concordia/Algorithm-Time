@@ -74,7 +74,7 @@ module.exports = function(models) {
 	  models.room_model.findOne({room: room}, function(err, roomObj){
 	  	data = {room:roomObj}
 	  	viewUtils.initializeSession(req, data, models, function(data){
-	  		models.user_prob_model.find({user: data.user.nickname, complete:true}, function(err, rels){
+	  		models.user_prob_model.find({user: data.user.nickname, accept:true}, function(err, rels){
 	  			data.solved = [];
 	  			for(var i = 0; i < rels.length; i ++){
 	  				data.solved.push(rels[i].prob);
@@ -101,6 +101,12 @@ module.exports = function(models) {
 			  			{
 			  				$unwind: "$userprobs"
 			  			},
+							{
+								$match:
+								{
+									"userprobs.accept": true
+								}
+							},
 			  			{
 			  				$group:
 			  				{
