@@ -53,7 +53,7 @@
 				});
 			<% } %>
 			<% if(main_page.split("/").reverse()[1] == "challenge"){ %>
-				var challenge = io.connect("<%=base_url%>/challenge");
+				var challenge = io.connect("/challenge");
 
 				function setJoinRoom(room_number){
 					$('tr[class^=room_].clicked').removeClass('clicked');
@@ -99,7 +99,7 @@
 				challenge.on('create_challenge_response', function(data){
 					if(data.response == "success"){
 						// Redirect to the new room
-						window.location.href = "<%=base_url%>/challenge/room/"+data.room_number;
+						window.location.href = "/challenge/room/"+data.room_number;
 					}
 				});
 
@@ -133,7 +133,7 @@
 				}
 			<% } %>
 			<% if(main_page.split("/").reverse()[2] + "/" + main_page.split("/").reverse()[1] == "challenge/room"){ %>
-				var challenge_room = io.connect("<%=base_url%>/challenge");
+				var challenge_room = io.connect("/challenge");
 			<% } %>
 		</script> 
 	</body>

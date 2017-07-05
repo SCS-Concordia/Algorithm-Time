@@ -19,10 +19,10 @@
 		  	<td><%= probs[i].title%></td>
 		  	<td><%= months[probs[i].date.getMonth()] + " " +probs[i].date.getDate() + ", " + probs[i].date.getFullYear()%></td>
 		  	<td><span class="glyphicon glyphicon-star" aria-hidden="true"></span>&nbsp;<%= probs[i].score %></td>
-		  	<td style="width:1%;"><a href="<%= base_url%>/prob/<%= probs[i].id%>" class="label label-success">View problem</a></td>
-		  	<td style="width:1%;"><a href="<%= base_url%>/room/<%= probs[i].room%>" class="label label-success">View room</a></td>
-			<td style="width:1%;"><a href="<%=base_url%>/prob/edit/<%=probs[i].id%>" class="label label-info">Edit</a></td>
-			<td style="width:1%;"><a href="<%=base_url%>/prob/delete/<%=probs[i].id%>" class="label label-danger delete-prob">Delete</a></td>
+		  	<td style="width:1%;"><a href="/prob/<%= probs[i].id%>" class="label label-success">View problem</a></td>
+		  	<td style="width:1%;"><a href="/room/<%= probs[i].room%>" class="label label-success">View room</a></td>
+			<td style="width:1%;"><a href="/prob/edit/<%=probs[i].id%>" class="label label-info">Edit</a></td>
+			<td style="width:1%;"><a href="/prob/delete/<%=probs[i].id%>" class="label label-danger delete-prob">Delete</a></td>
 		</tr>
 		<% } %>
 	</table>

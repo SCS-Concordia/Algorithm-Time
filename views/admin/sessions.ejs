@@ -14,7 +14,7 @@
 				<td><%= i+1 %></td>
 				<td><%= sessions[i].key%></td>
 				<td><%= sessions[i].nickname%></td>
-				<td style="width:1%;"><a href="<%= base_url%>/session/<%=sessions[i].key%>" class="label label-danger delete-session">Delete</td>
+				<td style="width:1%;"><a href="/session/<%=sessions[i].key%>" class="label label-danger delete-session">Delete</td>
 		</tr>
 		<% } %>
 	</table>

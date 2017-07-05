@@ -14,11 +14,11 @@
 		<% for(var i=0; i<rooms.length; i++) {%>
 		<tr>
 			<td><%= rooms[i].room %></td>
-		  	<td><a href="<%= __base_url + "/room/" + rooms[i].room %>"><%= rooms[i].title %></a></td>
+		  	<td><a href="/room/<%= rooms[i].room %>"><%= rooms[i].title %></a></td>
 		  	<td><%= months[rooms[i].date.getMonth()] + " " +rooms[i].date.getDate() + ", " + rooms[i].date.getFullYear()%></td>
 		  	<td><span class="glyphicon glyphicon-star" aria-hidden="true"></span>&nbsp;<%= rooms[i].points %></td>
-			<td style="width:1%;"><a href="<%=base_url%>/room/edit/<%=rooms[i].room%>" class="label label-info">Edit</a></td>
-			<td style="width:1%;"><a href="<%=base_url%>/room/delete/<%=rooms[i].room%>" class="label label-danger delete-room">Delete</a></td>
+			<td style="width:1%;"><a href="/room/edit/<%=rooms[i].room%>" class="label label-info">Edit</a></td>
+			<td style="width:1%;"><a href="/room/delete/<%=rooms[i].room%>" class="label label-danger delete-room">Delete</a></td>
 		</tr>
 		<% } %>
 	</table>
