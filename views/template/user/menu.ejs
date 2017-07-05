@@ -2,8 +2,8 @@
 	<div class="col-md-12">
 
 		<span class="logo-menu col-md-4">
-		<img src="<%=__base_url%>/favicon.ico" class="menubar-icon"/>
-		&nbsp;&nbsp;&nbsp;&nbsp;<a href="<%=__base_url%>">Algorithm Time</a></span>
+		<img src="/favicon.ico" class="menubar-icon"/>
+		&nbsp;&nbsp;&nbsp;&nbsp;<a href="/">Algorithm Time</a></span>
 
 		<div class="text-right col-md-8">
 			<ul class="nav nav-pills">
@@ -15,38 +15,38 @@
 					    <%= user.fullname %>&nbsp;&nbsp; <span class="caret"></span>
 					  </button>
 					  <ul class="dropdown-menu">
-					    <li><a href="<%=__base_url%>/user/profile">Profile</a></li>
+					    <li><a href="/user/profile">Profile</a></li>
 
 					    <% if(user.level == level.ADMIN){ %>
-					    	<li><a href="<%=__base_url%>/room/create">Create Room</a></li>
-					    	<li><a href="<%=__base_url%>/submissions">Submissions</a></li>
-					    	<li><a href="<%=__base_url%>/admin">Admin panel</a></li>
+					    	<li><a href="/room/create">Create Room</a></li>
+					    	<li><a href="/submissions">Submissions</a></li>
+					    	<li><a href="/admin">Admin panel</a></li>
 					    <% } %>
 
 					    <li role="separator" class="divider"></li>
-					    <li><a href="<%=__base_url%>/user/logout">Logout</a></li>
+					    <li><a href="/user/logout">Logout</a></li>
 					  </ul>
 					</div>
 					<li role="presentation" 
 					<% if(main_page.split("/").pop() == "all" && main_page.split("/")[main_page.split("/").length-2] == "room"){ %> class="active" <% } %>>
-					<a href="<%=__base_url%>/room/all">
+					<a href="/room/all">
 					<span class="glyphicon glyphicon-education" aria-hidden="true"></span>&nbsp;&nbsp;Rooms</a></li>
 				<% } %>	
 				<li role="presentation" 
 				<% if(main_page.split("/").pop() == "leaderboard"){ %> class="active" <% } %>
-				><a href="<%=__base_url%>/leaderboard">
+				><a href="/leaderboard">
 				<span class="glyphicon glyphicon-fire" aria-hidden="true"></span>&nbsp;&nbsp;Leaderboard</a></li>
 				<!--
 				<% if(loggedIn == true){ %>
 				<li role="presentation"
 				<% if(main_page.split("/").reverse()[1] == "challenge"){ %> class="active" <% } %>
-				><a href="<%=__base_url%>/challenge">
+				><a href="/challenge">
 				<span class="glyphicon glyphicon-knight" aria-hidden="true"></span>&nbsp;&nbsp;Challenge</a></li>
 				<% } %>
 				-->
 				<li role="presentation" 
 				<% if(main_page.split("/").pop() == "index" && main_page.split("/").reverse()[1] != "challenge" && main_page.split("/")[main_page.split("/").length-2] != "room" && main_page.split("/")[main_page.split("/").length-2] != "prob"){ %> class="active" <% } %>
-				><a href="<%=__base_url%>">
+				><a href="/">
 				<span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp;&nbsp;Home</a></li>
 			</ul>
 		</div>

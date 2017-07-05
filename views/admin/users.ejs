@@ -34,9 +34,9 @@
 						<%}
 					}%>
 				</td>
-				<td style="width:1%;"><a href="<%= base_url%>/user/profile/<%=users[i].nickname%>" class="label label-success">View</td>
-				<td style="width:1%;"><a href="<%= base_url%>/user/edit/<%=users[i].nickname%>" class="label label-info">Edit</td>
-				<td style="width:1%;"><a href="<%= base_url%>/user/delete/<%=users[i].nickname%>" class="label label-danger delete-user">Delete</td>
+				<td style="width:1%;"><a href="/user/profile/<%=users[i].nickname%>" class="label label-success">View</td>
+				<td style="width:1%;"><a href="/user/edit/<%=users[i].nickname%>" class="label label-info">Edit</td>
+				<td style="width:1%;"><a href="/user/delete/<%=users[i].nickname%>" class="label label-danger delete-user">Delete</td>
 		</tr>
 		<% } %>
 	</table>

@@ -2,7 +2,7 @@
 	<br><br>
 	<div class="panel panel-default">
 	  <!-- Default panel contents -->
-	  <div class="panel-heading"><strong><%= room.title %></strong> <%if(user.level == level.ADMIN){%><a href="<%=base_url%>/room/edit/<%=room.room%>" class="label label-info">Edit room</a><%}%><span class="label label-success right"><%= room.points %> points</span></div>
+	  <div class="panel-heading"><strong><%= room.title %></strong> <%if(user.level == level.ADMIN){%><a href="/room/edit/<%=room.room%>" class="label label-info">Edit room</a><%}%><span class="label label-success right"><%= room.points %> points</span></div>
 	  <div class="panel-body">
 	    <p><%= room.description %></p>
 	  </div>
@@ -11,13 +11,13 @@
 	  <div class="panel-heading" style="border-top:1px solid rgb(221, 221, 221); border-radius:0px;">Problem List</div>
 	  <div class="list-group">
 	  	<% for(var i=0; i<probs.length; i++) {%>
-	  		<a href="<%= __base_url %>/prob/<%= probs[i].id %>" class="list-group-item" 
+	  		<a href="/prob/<%= probs[i].id %>" class="list-group-item" 
 	  		<% if(solved.indexOf(probs[i].id) != -1 ){%>style="background-color:#dff0d8"<% } %>><%=probs[i].title%>
 	  		<span class="right"><span class="glyphicon glyphicon-star" aria-hidden="true"></span>&nbsp;&nbsp;<%= probs[i].score%></span></a>
 	  	<% }%>
 
 	    <% if(user.level == level.ADMIN) { %>
-	    <a href="<%= __base_url %>/prob/create/<%= room.room %>" class="list-group-item">
+	    <a href="/prob/create/<%= room.room %>" class="list-group-item">
 	    	<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;&nbsp;Add Problem
 	    </a>
 	    <% } %>

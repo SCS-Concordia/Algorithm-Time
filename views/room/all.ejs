@@ -13,7 +13,7 @@
 			<tr>
 				<td><%= rooms[i].room %></td>
 		  	<td>
-					<a href="<%= __base_url + "/room/" + rooms[i].room %>"><%= rooms[i].title %></a>
+					<a href="/room/<%= rooms[i].room %>"><%= rooms[i].title %></a>
 				</td>
 		  	<td><%= months[rooms[i].date.getMonth()] + " " +rooms[i].date.getDate() + ", " + rooms[i].date.getFullYear()%></td>
 		  	<td><span class="glyphicon glyphicon-star" aria-hidden="true"></span>&nbsp;<%= rooms[i].points %></td>

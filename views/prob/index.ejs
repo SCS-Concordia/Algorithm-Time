@@ -2,7 +2,7 @@
 	<br><br>
 	<div class="panel panel-default">
 	  <!-- Default panel contents -->
-	  <div class="panel-heading"><strong><%= prob.title %></strong> <% if(user.level == level.ADMIN){%><a href="<%=base_url%>/prob/edit/<%=prob.id%>" class="label label-info">Edit problem</a><%}%><span class="label label-success right"><%= prob.score %> points</span></div>
+	  <div class="panel-heading"><strong><%= prob.title %></strong> <% if(user.level == level.ADMIN){%><a href="/prob/edit/<%=prob.id%>" class="label label-info">Edit problem</a><%}%><span class="label label-success right"><%= prob.score %> points</span></div>
 	  <div class="panel-body">
 	    <p><%- prob.description %></p>
 	  </div>
@@ -25,11 +25,11 @@
 	    	<span class="glyphicon glyphicon-flag" aria-hidden="true"></span>&nbsp;&nbsp;Pending review
 	    </div>
 	    <% } else { %>
-	    <a href="<%= __base_url %>/prob/review/<%= prob.id %>" class="list-group-item">
+	    <a href="/prob/review/<%= prob.id %>" class="list-group-item">
 	    	<span class="glyphicon glyphicon-flag" aria-hidden="true"></span>&nbsp;&nbsp;Ask for solution review 
 	    </a>
 	    <% } %>
-	    <a href="<%= __base_url %>/room/<%= prob.room %>" class="list-group-item">
+	    <a href="/room/<%= prob.room %>" class="list-group-item">
 	    	<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>&nbsp;&nbsp;Back to room 
 	    </a>
 	  </div>
