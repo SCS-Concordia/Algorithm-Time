@@ -136,7 +136,7 @@ module.exports = function(models) {
 			data = {prob:prob, complete:true, accept:false};
 			viewUtils.initializeSession(req, data, models, function(data){
 				if(data.user == undefined){
-					res.redirect('/error');
+					res.redirect('/user/login');
 				}else{
 					models.user_prob_model.find({user: data.user.nickname, prob: prob.id}, function(err, rels){
 						if(rels.length > 0){
