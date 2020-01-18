@@ -1,7 +1,8 @@
 // Global
 global.__base = __dirname;
 global.__base_url = "http://localhost:3000";
-global.__db_url = "mongodb://localhost:27017/algorithm-time"
+global.__db_url = 
+"mongodb://scs_algo:LH9usujtKYLT59as@localhost:27017/scs_algotime"
 
 // Require
 var express = require('express');
@@ -21,7 +22,9 @@ var utils = require('./libs/utils');
 // Connect to DB
 var models = {};
 console.log("Connected to: " + __db_url);
-mongoose.connect(__db_url);
+mongoose.connect(__db_url)
+    .then(() => {console.log("Success")})
+    .catch(() => {console.log("Failure")});
 models.user_model = require('./models/user_model.js');
 models.session_model = require('./models/session_model.js');
 models.room_model = require('./models/room_model.js');
@@ -101,7 +104,7 @@ if (app.get('env') === 'development') {
 // no stacktraces leaked to user
 app.use(function (err, req, res, next) {
   res.status(err.status || 500);
-  res.redirect('/error');
+  res.redirect('/error')
 });
 
 // Socket based events

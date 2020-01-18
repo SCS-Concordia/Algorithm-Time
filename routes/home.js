@@ -4,7 +4,7 @@ module.exports = function (models) {
 	var utils = require('../libs/utils');
 	var router = express.Router();
 
-	router.get('/', function (req, res, next) {
+	router.get('/500.shtml', function(req, res, next) {
 		data = {};
 		utils.initializeSession(req, data, models, function (data) {
 			models.user_model.count({}, function (err, usercount) {
