@@ -138,10 +138,10 @@ module.exports = function(models) {
 					if(user.nickname.split(' ').length == 1) {
 
 						// Assert nickname is less than MAX_STRING_LENGTH
-						if(user.nickname.length < viewUtils.MAX_STRING_LENGTH){
+						if(user.nickname.length < viewUtils.MAX_STRING_SIZE){
 
 							// Asserts full name is less than MAX_STRING_LENGTH
-							if(user.fullname.length < viewUtils.MAX_STRING_LENGTH) {
+							if(user.fullname.length < viewUtils.MAX_STRING_SIZE) {
 								// Check if it's unique
 								models.user_model.find({ $or: [{nickname: user.nickname}, {email: user.email}]}, function(err, users){
 									
