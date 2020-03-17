@@ -137,29 +137,40 @@ module.exports = function(models) {
 					// One word only
 					if(user.nickname.split(' ').length == 1) {
 
-						// Check if it's unique
-						models.user_model.find({ $or: [{nickname: user.nickname}, {email: user.email}]}, function(err, users){
-							
-							// Already exists
-							if(users.length > 0) {
-								var message = "This nickname already exists, please type another one";
-								if(users[0].email == user.email){
-									message = "This email already exists, please type another one";
-								}
-								viewUtils.load(res, 'user/register', {error_msg: message, user: user});
-							} else {
+						// Assert nickname is less than MAX_STRING_LENGTH
+						if(user.nickname.length < viewUtils.MAX_STRING_LENGTH){
 
-								// Save new user
-								user.save(function(err) {
-									if(err){
-										viewUtils.load(res, 'user/register', {error_msg: "Couldn't connect to DB. Try again."});
-										console.log("Coudn't save user to DB: " + err);
+							if(user.fullname.length < viewUtils.MAX_STRING_LENGTH) {
+								// Check if it's unique
+								models.user_model.find({ $or: [{nickname: user.nickname}, {email: user.email}]}, function(err, users){
+									
+									// Already exists
+									if(users.length > 0) {
+										var message = "This nickname already exists, please type another one";
+										if(users[0].email == user.email){
+											message = "This email already exists, please type another one";
+										}
+										viewUtils.load(res, 'user/register', {error_msg: message, user: user});
 									} else {
-										viewUtils.load(res, 'user/login', {success_msg: "Successfully registered, please login."});
+
+										// Save new user
+										user.save(function(err) {
+											if(err){
+												viewUtils.load(res, 'user/register', {error_msg: "Couldn't connect to DB. Try again."});
+												console.log("Coudn't save user to DB: " + err);
+											} else {
+												viewUtils.load(res, 'user/login', {success_msg: "Successfully registered, please login."});
+											}
+										});
 									}
 								});
+							} else {
+								viewUtils.load(res, 'user/register', {error_msg: `Full name should be less than ${viewUtils.MAX_STRING_LENGTH} characters.`});
 							}
-						});
+
+						} else {
+							viewUtils.load(res, 'user/register', {error_msg: `Nickname should be less than ${viewUtils.MAX_STRING_LENGTH} characters.`});
+						}
 
 					} else {
 						viewUtils.load(res, 'user/register', {error_msg: "Nickname should not contain spaces"});
@@ -270,7 +281,7 @@ module.exports = function(models) {
 							var user = new models.user_model;
 							user.nickname = randNickname;
 							user.fullname = randNickname;
-							user.email = "";
+							user.email = `${randNickname}@scsconcordia.ca`;
 							user.password = "";
 							user.score = 0;
 							user.date = new Date();

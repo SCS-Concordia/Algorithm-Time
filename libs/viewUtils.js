@@ -8,6 +8,9 @@ utils.level.ADMIN = 0;
 utils.level.GUEST = 1;
 utils.level.USER = 2;
 
+// MAX STRING SIZE
+utils.MAX_STRING_SIZE = 100;
+
 utils.initializeSession = function(req, data, models, callback){
 	if(typeof req.cookies.session != "undefined"){
 		models.session_model.find({key: req.cookies.session.key}, function(err, sessions){

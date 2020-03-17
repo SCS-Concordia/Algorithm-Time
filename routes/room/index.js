@@ -70,11 +70,15 @@ module.exports = function(models) {
 	});
 
 	router.get('/:id(\\d+)/', function (req, res, next) {
-	  var room = req.params.id;
+      var room = req.params.id;
 	  models.room_model.findOne({room: room}, function(err, roomObj){
+        if (err) return false;
+
 	  	data = {room:roomObj}
 	  	viewUtils.initializeSession(req, data, models, function(data){
-              if(!data.loggedIn) {
+              if(data.room == null){
+                  res.redirect('/room/all');
+              } else if(!data.loggedIn) {
                   res.redirect('/user/login');
               } else {
                 models.user_prob_model.find({user: data.user.nickname, accept:true}, function(err, rels){
@@ -133,7 +137,7 @@ module.exports = function(models) {
                 });
             }
 	  	});
-	  });
+      });
 	});
 
 	router.get('/delete/:id', function(req, res, next) {

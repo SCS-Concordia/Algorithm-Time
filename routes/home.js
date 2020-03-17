@@ -65,8 +65,9 @@ module.exports = function(models){
 
 	router.get('/submissions', function(req, res, next){
 		data = {};
+		
 		viewUtils.initializeSession(req, data, models, function(data){
-			if(data.user == undefined || data.user.level != 0){
+			if(data.user == undefined || data.user.level != viewUtils.level.ADMIN){
 				res.redirect('/');
 			}else{
 				models.user_prob_model.aggregate([
