@@ -140,6 +140,7 @@ module.exports = function(models) {
 						// Assert nickname is less than MAX_STRING_LENGTH
 						if(user.nickname.length < viewUtils.MAX_STRING_LENGTH){
 
+							// Asserts full name is less than MAX_STRING_LENGTH
 							if(user.fullname.length < viewUtils.MAX_STRING_LENGTH) {
 								// Check if it's unique
 								models.user_model.find({ $or: [{nickname: user.nickname}, {email: user.email}]}, function(err, users){
@@ -157,7 +158,7 @@ module.exports = function(models) {
 										user.save(function(err) {
 											if(err){
 												viewUtils.load(res, 'user/register', {error_msg: "Couldn't connect to DB. Try again."});
-												console.log("Coudn't save user to DB: " + err);
+												console.log("Couldn't save user to DB: " + err);
 											} else {
 												viewUtils.load(res, 'user/login', {success_msg: "Successfully registered, please login."});
 											}
@@ -165,19 +166,19 @@ module.exports = function(models) {
 									}
 								});
 							} else {
-								viewUtils.load(res, 'user/register', {error_msg: `Full name should be less than ${viewUtils.MAX_STRING_LENGTH} characters.`});
+								viewUtils.load(res, 'user/register', {error_msg: `Full name should be less than ${viewUtils.MAX_STRING_SIZE} characters.`, user});
 							}
 
 						} else {
-							viewUtils.load(res, 'user/register', {error_msg: `Nickname should be less than ${viewUtils.MAX_STRING_LENGTH} characters.`});
+							viewUtils.load(res, 'user/register', {error_msg: `Nickname should be less than ${viewUtils.MAX_STRING_SIZE} characters.`, user});
 						}
 
 					} else {
-						viewUtils.load(res, 'user/register', {error_msg: "Nickname should not contain spaces"});
+						viewUtils.load(res, 'user/register', {error_msg: "Nickname should not contain spaces.", user});
 					}
 					
 				} else {
-					viewUtils.load(res, 'user/register', {error_msg: "Nickname is required"});
+					viewUtils.load(res, 'user/register', {error_msg: "Nickname is required.", user});
 				}
 			}
 		});
