@@ -72,12 +72,17 @@ module.exports = function (models) {
 	router.get('/:id(\\d+)/', function (req, res, next) {
 		var room = req.params.id;
 		models.room_model.findOne({ room: room }, function (err, roomObj) {
-			if (err) return false;
+			if (err) {
+				// If there is an issue, redirect to error page and return false.
+				res.redirect('/error');
+				return false;
+			}
 
 			data = { room: roomObj }
 			utils.initializeSession(req, data, models, function (data) {
 				if (data.room == null) {
-					res.redirect('/room/all');
+					// If there is no room, redirect to error page.
+					res.redirect('/error');
 				} else if (!data.loggedIn) {
 					res.redirect('/user/login');
 				} else {
