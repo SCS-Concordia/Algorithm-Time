@@ -109,6 +109,51 @@ module.exports = function (models) {
 		});
 	});
 
+	/**
+	 * Validates email.
+	 * @param {*} email Email to validate.
+	 * @returns If the email is valid.
+	 */
+	function validateEmail(email) {
+		var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		return re.test(email);
+	}
+
+	/**
+	 * Validates user fields from registry form.
+	 * @param {*} user The user to validate.
+	 * @throws Error if user is not valid.
+	 * @returns Returns true if valid.
+	 */
+	function validateUser(user) {
+		// Assert that nickname is not null.
+		if (user.nickname == undefined || user.nickname.trim() == '')
+			throw `Nickname is required.`;
+
+		// Assert that nickname is one word.
+		if (user.nickname.split(' ').length != 1)
+			throw `Nickname should not contain spaces.`;
+
+		// Assert that nickname is less than MAX_STRING_SIZE.
+		if (user.nickname.length >= utils.MAX_STRING_SIZE)
+			throw `Nickname should be less than ${utils.MAX_STRING_SIZE} characters.`;
+
+		// Assert that fullname is less than MAX_STRING_SIZE.
+		if (user.fullname.length >= utils.MAX_STRING_SIZE)
+			throw `Full name should be less than ${utils.MAX_STRING_SIZE} characters.`;
+
+		// Asserts that email is valid.
+		if (!validateEmail(user.email))
+			throw `Email is invalid.`;
+
+		// Assers password is not empty.
+		if (user.password == undefined || user.password.trim() == '')
+			throw `Password is required.`;
+
+		// If all tests pass, the user is valid.
+		return true;
+	}
+
 	router.post('/register', function (req, res, next) {
 		utils.initializeSession(req, {}, models, function (data) {
 			if (data.loggedIn) {
@@ -131,54 +176,35 @@ module.exports = function (models) {
 				// Logging
 				console.log("Registration form submitted: " + user.nickname);
 
-				// If no nickname selected
-				if (user.nickname !== undefined && user.nickname.trim() != '') {
+				try {
+					if (validateUser(user)) {
+						// Assert user nickname and user email is unique.
+						models.user_model.find({ $or: [{ nickname: user.nickname }, { email: user.email }] }, function (err, users) {
+							if (users.length > 0) {
+								let error_msg = "";
 
-					// One word only
-					if (user.nickname.split(' ').length == 1) {
+								if (users[0].email == user.email) {
+									error_msg = "This email already exists, please type another one";
+								} else {
+									error_msg = "This nickname already exists, please type another one";
+								}
 
-						// Assert nickname is less than MAX_STRING_LENGTH
-						if (user.nickname.length < utils.MAX_STRING_SIZE) {
-
-							// Asserts full name is less than MAX_STRING_LENGTH
-							if (user.fullname.length < utils.MAX_STRING_SIZE) {
-								// Check if it's unique
-								models.user_model.find({ $or: [{ nickname: user.nickname }, { email: user.email }] }, function (err, users) {
-
-									// Already exists
-									if (users.length > 0) {
-										var message = "This nickname already exists, please type another one";
-										if (users[0].email == user.email) {
-											message = "This email already exists, please type another one";
-										}
-										utils.load(res, 'user/register', { error_msg: message, user: user });
+								utils.load(res, 'user/register', { error_msg, user });
+							} else {
+								// Save new user
+								user.save(function (err) {
+									if (err) {
+										utils.load(res, 'user/register', { error_msg: "Couldn't connect to DB. Try again." });
+										console.log("Couldn't save user to DB: " + err);
 									} else {
-
-										// Save new user
-										user.save(function (err) {
-											if (err) {
-												utils.load(res, 'user/register', { error_msg: "Couldn't connect to DB. Try again." });
-												console.log("Couldn't save user to DB: " + err);
-											} else {
-												utils.load(res, 'user/login', { success_msg: "Successfully registered, please login." });
-											}
-										});
+										utils.load(res, 'user/login', { success_msg: "Successfully registered, please login." });
 									}
 								});
-							} else {
-								utils.load(res, 'user/register', { error_msg: `Full name should be less than ${utils.MAX_STRING_SIZE} characters.`, user });
 							}
-
-						} else {
-							utils.load(res, 'user/register', { error_msg: `Nickname should be less than ${utils.MAX_STRING_SIZE} characters.`, user });
-						}
-
-					} else {
-						utils.load(res, 'user/register', { error_msg: "Nickname should not contain spaces.", user });
+						})
 					}
-
-				} else {
-					utils.load(res, 'user/register', { error_msg: "Nickname is required.", user });
+				} catch (err) {
+					utils.load(res, 'user/register', { error_msg: err, user });
 				}
 			}
 		});
