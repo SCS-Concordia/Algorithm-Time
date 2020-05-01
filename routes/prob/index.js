@@ -1,7 +1,7 @@
 module.exports = function (models) {
 
 	var express = require('express');
-	var viewUtils = require(__base + '/libs/viewUtils');
+	var utils = require('../../libs/utils');
 	var router = express.Router();
 	var ObjectId = require('mongodb').ObjectID;
 
@@ -9,7 +9,7 @@ module.exports = function (models) {
 	router.get('/review/:id(\\d+)/', function (req, res, next) {
 		models.prob_model.findOne({ id: req.params.id }, function (err, prob) {
 			data = { prob: prob };
-			viewUtils.initializeSession(req, data, models, function (data) {
+			utils.initializeSession(req, data, models, function (data) {
 				if (data.prob == null) {
 					res.redirect('/error');
 				} else if (data.user == null) {
@@ -40,8 +40,8 @@ module.exports = function (models) {
 	router.get('/complete/:id/', function (req, res, next) {
 		models.user_prob_model.findOne({ _id: new ObjectId(req.params.id) }, function (error, rel) {
 			data = { rel: rel };
-			viewUtils.initializeSession(req, data, models, function (data) {
-				if (data.user == undefined || data.user.level != viewUtils.level.ADMIN) {
+			utils.initializeSession(req, data, models, function (data) {
+				if (data.user == undefined || data.user.level != utils.level.ADMIN) {
 					res.redirect('/');
 				} else {
 					rel.complete = true;
@@ -98,8 +98,8 @@ module.exports = function (models) {
 	// Mark a submission as invalid, this will not award points and will make it so the user has to resubmit
 	// ADMIN ONLY
 	router.get('/incomplete/:id/', function (req, res, next) {
-		viewUtils.initializeSession(req, {}, models, function (data) {
-			if (data.user == undefined || data.user.level == viewUtils.level.ADMIN) {
+		utils.initializeSession(req, {}, models, function (data) {
+			if (data.user == undefined || data.user.level == utils.level.ADMIN) {
 				models.user_prob_model.findOne({ _id: new ObjectId(req.params.id) }, function (error, rel) {
 					rel.accept = false;
 					rel.complete = true;
@@ -122,11 +122,11 @@ module.exports = function (models) {
 	router.get('/create/:id(\\d+)/', function (req, res, next) {
 		models.room_model.findOne({ room: req.params.id }, function (err, room) {
 			data = { room: room };
-			viewUtils.initializeSession(req, data, models, function (data) {
+			utils.initializeSession(req, data, models, function (data) {
 				if (data.user == undefined || data.user.level != 0) {
 					res.redirect('/');
 				} else {
-					viewUtils.load(res, 'prob/create', data);
+					utils.load(res, 'prob/create', data);
 				}
 			});
 		});
@@ -136,7 +136,7 @@ module.exports = function (models) {
 	router.get('/:id(\\d+)/', function (req, res, next) {
 		models.prob_model.findOne({ id: req.params.id }, function (err, prob) {
 			data = { prob: prob, complete: true, accept: false };
-			viewUtils.initializeSession(req, data, models, function (data) {
+			utils.initializeSession(req, data, models, function (data) {
 				if (data.user == undefined) {
 					res.redirect('/user/login');
 				} else {
@@ -148,7 +148,7 @@ module.exports = function (models) {
 							}
 						}
 						data.rels = rels;
-						viewUtils.load(res, 'prob/index', data);
+						utils.load(res, 'prob/index', data);
 					});
 				}
 			});
@@ -156,12 +156,12 @@ module.exports = function (models) {
 	});
 
 	router.get('/create', function (req, res, next) {
-		viewUtils.load(res, 'prob/create', { error_msg: "No room specified" });
+		utils.load(res, 'prob/create', { error_msg: "No room specified" });
 	});
 
 	router.post('/create', function (req, res, next) {
 		data = req.body;
-		viewUtils.initializeSession(req, data, models, function (data) {
+		utils.initializeSession(req, data, models, function (data) {
 			if (data.user.level == 0) {
 				models.room_model.findOne({ room: data.room }, function (err, room) {
 					models.prob_model.find({}, function (err, probs) {
@@ -172,7 +172,7 @@ module.exports = function (models) {
 							|| data.description.trim() == "" || data.description == undefined
 							|| data.score.trim() == "" || data.score == undefined) {
 							data.error_msg = "Missing fields";
-							viewUtils.load(res, 'prob/create', data);
+							utils.load(res, 'prob/create', data);
 						} else {
 							prob.title = data.title;
 							prob.description = data.description;
@@ -184,7 +184,7 @@ module.exports = function (models) {
 								room.save(function (err) {
 									if (err) {
 										data.error_msg = "Error Saving Prob";
-										viewUtils.load(res, 'prob/create', data);
+										utils.load(res, 'prob/create', data);
 									} else {
 										res.redirect('/room/' + room.room);
 									}
@@ -198,8 +198,8 @@ module.exports = function (models) {
 	});
 
 	router.get('/edit/:id', function (req, res, next) {
-		viewUtils.initializeSession(req, {}, models, function (data) {
-			if (data.loggedIn && data.user.level == viewUtils.level.ADMIN) {
+		utils.initializeSession(req, {}, models, function (data) {
+			if (data.loggedIn && data.user.level == utils.level.ADMIN) {
 				models.prob_model.findOne({ id: req.params.id }, function (err, prob) {
 					if (err) {
 						res.redirect('/error');
@@ -217,7 +217,7 @@ module.exports = function (models) {
 									console.log('Error: ' + err);
 								} else {
 									data.rooms = rooms;
-									viewUtils.load(res, "prob/edit", data);
+									utils.load(res, "prob/edit", data);
 								}
 							});
 
@@ -233,8 +233,8 @@ module.exports = function (models) {
 	});
 
 	router.post('/edit/:id', function (req, res, next) {
-		viewUtils.initializeSession(req, {}, models, function (data) {
-			if (data.loggedIn && data.user.level == viewUtils.level.ADMIN) {
+		utils.initializeSession(req, {}, models, function (data) {
+			if (data.loggedIn && data.user.level == utils.level.ADMIN) {
 				models.prob_model.findOne({ id: req.params.id }, function (err, prob) {
 					if (err) {
 						res.redirect('/error');
@@ -260,9 +260,9 @@ module.exports = function (models) {
 									data.rooms = rooms;
 									data.prob = prob;
 
-									if (!viewUtils.isset(prob.title) || !viewUtils.isset(prob.room) || !viewUtils.isset(prob.description) || !viewUtils.isset(prob.score)) {
+									if (!utils.isset(prob.title) || !utils.isset(prob.room) || !utils.isset(prob.description) || !utils.isset(prob.score)) {
 										data.error_msg = "Missing fields";
-										viewUtils.load(res, 'prob/edit', data);
+										utils.load(res, 'prob/edit', data);
 									} else {
 										var room1 = undefined;
 										var room2 = undefined;
@@ -280,17 +280,17 @@ module.exports = function (models) {
 
 										if (room1 == undefined || room2 == undefined) {
 											data.error_msg = "Room not found";
-											viewUtils.load(res, 'prob/edit', data);
+											utils.load(res, 'prob/edit', data);
 										} else {
 											room1.save(function (r1Error) {
 												room2.save(function (r2Error) {
 													prob.save(function (pError) {
 														if (r1Error || r2Error || pError) {
 															data.error_msg = "Error connecting to the database";
-															viewUtils.load(res, 'prob/edit', data);
+															utils.load(res, 'prob/edit', data);
 														} else {
 															data.success_msg = "Problem updated";
-															viewUtils.load(res, 'prob/edit', data);
+															utils.load(res, 'prob/edit', data);
 														}
 													});
 												});
@@ -312,8 +312,8 @@ module.exports = function (models) {
 	});
 
 	router.get('/delete/:id', function (req, res, next) {
-		viewUtils.initializeSession(req, {}, models, function (data) {
-			if (data.loggedIn && data.user.level == viewUtils.level.ADMIN) {
+		utils.initializeSession(req, {}, models, function (data) {
+			if (data.loggedIn && data.user.level == utils.level.ADMIN) {
 				models.prob_model.findOne({ id: req.params.id }, function (err, prob) {
 					if (err) {
 						res.send('500');
